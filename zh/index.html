@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Etsy Fee Calculator — Calculate Your Etsy Profit After Fees (2026)</title>
+<meta name="description" content="Free Etsy fee calculator. Enter your listing price, shipping, and item cost to see exactly how much you keep after Etsy's listing fee, transaction fee, and payment processing fee.">
+<meta name="keywords" content="etsy fee calculator, etsy profit calculator, etsy fees 2026, how much does etsy take, etsy seller fees">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<meta name="theme-color" content="#F1641E">
+
+<link rel="canonical" href="https://toolara.dev/etsy-fee-calculator/zh/">
+<link rel="alternate" hreflang="en" href="https://toolara.dev/etsy-fee-calculator/">
+<link rel="alternate" hreflang="zh-Hans" href="https://toolara.dev/etsy-fee-calculator/zh/">
+<link rel="alternate" hreflang="x-default" href="https://toolara.dev/etsy-fee-calculator/">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Etsy Fee Calculator — Calculate Your Etsy Profit After Fees">
+<meta property="og:description" content="See exactly how much you keep after Etsy's listing, transaction, and payment processing fees.">
+<meta property="og:url" content="https://toolara.dev/etsy-fee-calculator/zh/">
+<meta property="og:locale" content="en_US">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Etsy Fee Calculator",
+  "url": "https://toolara.dev/etsy-fee-calculator/zh/",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Any",
+  "description": "Free calculator that shows exactly how much an Etsy seller keeps after all fees.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+
+<script>window.__FORCE_LANG__ = 'zh';</script>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="hero">
+  <div class="lang-switch">
+    <select id="langSelect" onchange="setLang(this.value)" aria-label="Language">
+      <option value="en">English</option>
+      <option value="zh">简体中文</option>
+    </select>
+  </div>
+  <div class="hero-inner">
+    <div class="hero-badge">🛍️ Etsy Seller Tool</div>
+    <h1 data-i18n="title">Etsy Fee Calculator</h1>
+    <p data-i18n="subtitle">See exactly how much you keep after Etsy's listing, transaction, and payment processing fees.</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="card">
+    <h2 class="visually-hidden" data-i18n="calcHeading">Calculator</h2>
+
+    <div class="row">
+      <div>
+        <label for="price" data-i18n="priceLabel">Listing price ($)</label>
+        <input type="number" id="price" min="0" step="0.01" placeholder="25.00" value="25" inputmode="decimal">
+      </div>
+      <div>
+        <label for="shipping" data-i18n="shippingLabel">Shipping charged ($)</label>
+        <input type="number" id="shipping" min="0" step="0.01" placeholder="5.00" value="5" inputmode="decimal">
+      </div>
+    </div>
+
+    <div class="row">
+      <div>
+        <label for="itemCost" data-i18n="itemCostLabel">Item cost ($)</label>
+        <input type="number" id="itemCost" min="0" step="0.01" placeholder="8.00" value="8" inputmode="decimal">
+      </div>
+      <div>
+        <label for="shipCost" data-i18n="shipCostLabel">Your shipping cost ($)</label>
+        <input type="number" id="shipCost" min="0" step="0.01" placeholder="4.50" value="4.5" inputmode="decimal">
+      </div>
+    </div>
+
+    <details class="advanced">
+      <summary data-i18n="advancedLabel">Advanced fee settings</summary>
+      <div class="row">
+        <div>
+          <label for="listingFee" data-i18n="listingFeeLabel">Listing fee ($)</label>
+          <input type="number" id="listingFee" min="0" step="0.01" value="0.20" inputmode="decimal">
+        </div>
+        <div>
+          <label for="txnPct" data-i18n="txnLabel">Transaction fee (%)</label>
+          <input type="number" id="txnPct" min="0" step="0.1" value="6.5" inputmode="decimal">
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label for="payPct" data-i18n="payPctLabel">Payment processing (%)</label>
+          <input type="number" id="payPct" min="0" step="0.1" value="3" inputmode="decimal">
+        </div>
+        <div>
+          <label for="payFixed" data-i18n="payFixedLabel">Payment fixed ($)</label>
+          <input type="number" id="payFixed" min="0" step="0.01" value="0.25" inputmode="decimal">
+        </div>
+      </div>
+    </details>
+
+    <button class="calc" type="button" onclick="calculate()" data-i18n="calcBtn">Calculate profit</button>
+
+    <div id="result" role="region" aria-live="polite">
+      <div class="result-label" data-i18n="resultLabel">Net profit</div>
+      <div class="net-profit" id="netProfit">—</div>
+      <div class="margin-note" id="marginNote"></div>
+
+      <div class="breakdown">
+        <div class="bd-row"><span data-i18n="bdRevenue">Total revenue</span><strong id="bdRevenue">—</strong></div>
+        <div class="bd-row bd-sub"><span data-i18n="bdListing">Listing fee</span><strong id="bdListing">—</strong></div>
+        <div class="bd-row bd-sub"><span data-i18n="bdTxn">Transaction fee</span><strong id="bdTxn">—</strong></div>
+        <div class="bd-row bd-sub"><span data-i18n="bdPay">Payment processing</span><strong id="bdPay">—</strong></div>
+        <div class="bd-row bd-sub"><span data-i18n="bdTotalFees">Total Etsy fees</span><strong id="bdTotalFees">—</strong></div>
+        <div class="bd-divider"></div>
+        <div class="bd-row"><span data-i18n="bdItemCost">Item cost</span><strong id="bdItemCost">—</strong></div>
+        <div class="bd-row"><span data-i18n="bdShipCost">Your shipping cost</span><strong id="bdShipCost">—</strong></div>
+        <div class="bd-divider"></div>
+        <div class="bd-row bd-total"><span data-i18n="bdNet">Net profit</span><strong id="bdNet">—</strong></div>
+      </div>
+
+      <div class="share-row">
+        <button class="share-btn" type="button" onclick="copyShareLink()" data-i18n="shareBtn">Copy shareable link</button>
+        <span class="share-copied" id="shareCopied" data-i18n="shareCopied">Copied!</span>
+      </div>
+
+      <div class="result-disclaimer" data-i18n="resultDisclaimer">Estimate only. Etsy fees may vary by region and account type. Verify current fees on Etsy's official Seller Handbook.</div>
+    </div>
+  </section>
+
+  <section>
+    <h2 data-i18n="whatIsTitle">How Etsy fees work</h2>
+    <p data-i18n="whatIsText">Etsy charges sellers three main fees: a listing fee each time you publish or renew an item, a transaction fee on every sale, and a payment processing fee. This calculator subtracts all three from your revenue, then subtracts your item and shipping costs, to show your true profit.</p>
+  </section>
+
+  <section>
+    <h2 data-i18n="feesTitle">Current Etsy fees (2026)</h2>
+    <table>
+      <thead>
+        <tr><th data-i18n="thFee">Fee</th><th data-i18n="thAmount">Amount</th></tr>
+      </thead>
+      <tbody>
+        <tr><td data-i18n="feeListing">Listing fee</td><td data-i18n="feeListingAmt">$0.20 per item (renews every 4 months)</td></tr>
+        <tr><td data-i18n="feeTxn">Transaction fee</td><td data-i18n="feeTxnAmt">6.5% of total sale price (including shipping)</td></tr>
+        <tr><td data-i18n="feePay">Payment processing</td><td data-i18n="feePayAmt">3% + $0.25 per transaction (US)</td></tr>
+      </tbody>
+    </table>
+    <p data-i18n="feesNote">Additional fees may apply: offsite ads (15% if you make a sale through an Etsy ad), currency conversion (2.5%), and regulatory operating fees in some regions.</p>
+  </section>
+
+  <section>
+    <h2 data-i18n="howToTitle">How to use this calculator</h2>
+    <ol>
+      <li data-i18n="howTo1">Enter your listing price — the amount the buyer pays for the item.</li>
+      <li data-i18n="howTo2">Enter shipping charged — what the buyer pays you for shipping (enter 0 if free shipping).</li>
+      <li data-i18n="howTo3">Enter your item cost — materials, labor, packaging.</li>
+      <li data-i18n="howTo4">Enter your shipping cost — what you actually pay the carrier.</li>
+      <li data-i18n="howTo5">Click "Calculate profit" to see your true take-home amount.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2 data-i18n="faqTitle">Frequently asked questions</h2>
+
+    <h3 data-i18n="faq1q">How much does Etsy take per sale?</h3>
+    <p data-i18n="faq1a">On a typical $25 sale with $5 shipping (US), Etsy takes approximately: $0.20 listing fee + $1.95 transaction fee (6.5% of $30) + $1.15 payment processing (3% + $0.25) = <strong>$3.30 total</strong>. You keep $26.70 before your own costs.</p>
+
+    <h3 data-i18n="faq2q">Is Etsy worth it for small sellers?</h3>
+    <p data-i18n="faq2a">It depends on your margins. Etsy's total fees typically run 9-12% of the sale price. If your item cost plus shipping cost is less than 40% of your revenue, you can usually maintain a healthy 40-50% profit margin. Anything under 20% margin is hard to sustain.</p>
+
+    <h3 data-i18n="faq3q">Does Etsy charge fees on shipping?</h3>
+    <p data-i18n="faq3a">Yes. Etsy's 6.5% transaction fee applies to the total sale amount, including shipping charges. This surprises many new sellers. If you charge $5 for shipping, Etsy takes 6.5% of that $5 too.</p>
+
+    <h3 data-i18n="faq4q">What are offsite ads and do they cost extra?</h3>
+    <p data-i18n="faq4a">Offsite ads are Etsy ads shown on Google, Facebook, and Instagram. If a buyer clicks one of those ads and purchases from you within 30 days, Etsy charges an additional 15% fee. Sellers making over $10,000/year are automatically enrolled and cannot opt out.</p>
+
+    <h3 data-i18n="faq5q">How do I price my Etsy items to make a profit?</h3>
+    <p data-i18n="faq5a">A common formula: (Item cost + Shipping cost) ÷ (1 - 0.10) × 2. This assumes Etsy takes about 10% in fees and you want a 50% profit margin. For a $8 item with $4.50 shipping: ($12.50 ÷ 0.90) × 2 = <strong>$27.78 minimum listing price</strong>.</p>
+
+    <div class="disclaimer" data-i18n="disclaimer"><strong>Disclaimer:</strong> This calculator provides estimates for educational purposes. Etsy's fee structure may change. Always verify current fees in Etsy's official Seller Handbook before making pricing decisions.</div>
+  </section>
+
+  <section>
+    <h2 data-i18n="moreToolsTitle">More seller fee calculators</h2>
+    <p data-i18n="moreToolsText">Coming soon: eBay fee calculator, Amazon FBA fee calculator, Depop fee calculator.</p>
+  </section>
+</main>
+
+<footer class="footer" data-i18n="footer">Runs entirely in your browser. No data is collected or stored.</footer>
+
+<script src="js/i18n.js"></script>
+<script src="js/calculator.js"></script>
+</body>
+</html>
